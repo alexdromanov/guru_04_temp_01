@@ -35,11 +35,8 @@ public class StudentRegistrationFormPage {
         $("#userEmail").setValue(email);
         $("#gender-radio-1").doubleClick();
         $("#userNumber").setValue(phone);
+        setDate(birthYear, birthMonth, birthDay);
 
-        $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").selectOption(birthMonth);
-        $(".react-datepicker__year-select").selectOption(birthYear);
-        $(String.format("[aria-label='Choose Tuesday, %s %sth, %s']", birthMonth, birthDay, birthYear)).click();
 
         $("#subjectsInput").setValue(subjects);
         $("#subjectsInput").pressEnter();
@@ -55,6 +52,13 @@ public class StudentRegistrationFormPage {
         $("#react-select-4-input").setValue(city).pressEnter();
 
         $("#submit").click();
+
+    }
+    public void setDate(String year, String month, String day) {
+        $("#dateOfBirthInput").click();
+        $(".react-datepicker__month-select").selectOption(month);
+        $(".react-datepicker__year-select").selectOption(year);
+        $(String.format("[aria-label='Choose Tuesday, %s %sth, %s']", month, day, year)).click();
 
     }
 
