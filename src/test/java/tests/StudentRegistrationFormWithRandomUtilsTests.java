@@ -1,43 +1,52 @@
-package pageobjects.scenarios;
+package tests;
+
+import com.codeborne.selenide.Configuration;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static utils.RandomUtils.getRandomString;
 
-public class StudentRegistrationFormPage {
+public class StudentRegistrationFormWithRandomUtilsTests {
 
-   private String firstName = "Alex",
-     lastName = "Dent",
-     gender = "Male",
-     email = "test@gmail.com",
-     phone = "0123456789",
-     birthDay = "17",
-     birthMonth = "August",
-     birthYear = "1982",
-     birthСheck ="17 August,1982",
-     subjects = "English",
-     hobby = "Sports",
-     photoName = "11.jpg",
-     address = "Russia" + "Moscow" + "Ostankino",
-     state = "Haryana",
-     city = "Karnal";
+    @BeforeAll
+    static void setup(){
+        Configuration.startMaximized = true;
+    }
+    @Test
+    void selenideSearchTest() {
+        String firstName = getRandomString(22);
+        String lastName = getRandomString(15);
+        String gender = "Male";
+        String email = "test@gmail.com";
+        String phone = "0123456789";
+        String birthDay = "17";
+        String birthMonth = "August";
+        String birthYear = "1982";
+        String birthСheck ="17 August,1982";
+        String subjects = "English";
+        String hobby = "Sports";
+        String photoName = "11.jpg";
+        String address = "Russia" + "Moscow" + "Ostankino";
+        String state = "Haryana";
+        String city = "Karnal";
 
-    public StudentRegistrationFormPage openPage(){
         open("https://demoqa.com/automation-practice-form");
         $(".main-header").shouldHave(text("Practice Form"));
 
-       return this;
-    }
-
-    public StudentRegistrationFormPage fillForm(){
         $("#firstName").setValue(firstName);
         $("#lastName").setValue(lastName);
         $("#userEmail").setValue(email);
         $("#gender-radio-1").doubleClick();
         $("#userNumber").setValue(phone);
-        setDate(birthYear, birthMonth, birthDay);
 
+        $("#dateOfBirthInput").click();
+        $(".react-datepicker__month-select").selectOption(birthMonth);
+        $(".react-datepicker__year-select").selectOption(birthYear);
+        $(String.format("[aria-label='Choose Tuesday, %s %sth, %s']", birthMonth, birthDay, birthYear)).click();
 
         $("#subjectsInput").setValue(subjects);
         $("#subjectsInput").pressEnter();
@@ -54,19 +63,6 @@ public class StudentRegistrationFormPage {
 
         $("#submit").click();
 
-        return this;
-
-
-    }
-    public void setDate(String year, String month, String day) {
-        $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").selectOption(month);
-        $(".react-datepicker__year-select").selectOption(year);
-        $(String.format("[aria-label='Choose Tuesday, %s %sth, %s']", month, day, year)).click();
-
-    }
-
-    public void checkData(){
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
         $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text(firstName), text(lastName));
         $(".table-responsive").$(byText("Student Email")).parent().shouldHave(text(email));
@@ -78,8 +74,7 @@ public class StudentRegistrationFormPage {
         $(".table-responsive").$(byText("Picture")).parent().shouldHave(text(photoName));
         $(".table-responsive").$(byText("Address")).parent().shouldHave(text(address));
         $(".table-responsive").$(byText("State and City")).parent().shouldHave(text(state+" "+city));
-
     }
 
-}
 
+}
