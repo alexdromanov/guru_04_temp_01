@@ -13,7 +13,6 @@ public class StudentRegistrationFormTests {
                 .fillForm()
                 .checkData();
 
-        studentRegistrationFormPage.checkData();
 
     }
 }
